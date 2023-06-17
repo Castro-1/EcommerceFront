@@ -1,10 +1,9 @@
 import Header from "@/components/Header";
 import Featured from "@/components/Featured";
-import { Product } from "@/models/Product";
 import { mongooseConnect } from "@/lib/mongoose";
+import { Product } from "@/models/Product";
 
 export default function Home({ product }) {
-  console.log(product);
   return (
     <div>
       <Header />
