@@ -7,18 +7,12 @@ import { CartContext } from "@/components/CartContext";
 import axios from "axios";
 import Table from "@/components/Table";
 import Input from "@/components/Input";
+import WhiteBox from "@/components/WhiteBox";
 
 const ColumnsWrapper = styled.div`
   display: grid;
   grid-template-columns: 1.3fr 0.7fr;
   gap: 40px;
-`;
-
-const Box = styled.div`
-  background-color: #fff;
-  border-radius: 10px;
-  margin-top: 40px;
-  padding: 30px;
 `;
 
 const ProductInfoCell = styled.td`
@@ -119,10 +113,10 @@ export default function CartPage() {
         <Header />
         <ColumnsWrapper>
           <Center>
-            <Box>
+            <WhiteBox>
               <h1>Thanks for your order!</h1>
               <p>We will email you when your order will be sent.</p>
-            </Box>
+            </WhiteBox>
           </Center>
         </ColumnsWrapper>
       </>
@@ -134,7 +128,7 @@ export default function CartPage() {
       <Header />
       <Center>
         <ColumnsWrapper>
-          <Box>
+          <WhiteBox>
             <h2>Cart</h2>
             {!products?.length ? (
               <div>Your cart is empty</div>
@@ -189,9 +183,9 @@ export default function CartPage() {
                 </Table>
               </>
             )}
-          </Box>
+          </WhiteBox>
           {!!products?.length && (
-            <Box>
+            <WhiteBox>
               <h2>Order Information</h2>
               <Input
                 type="text"
@@ -240,7 +234,7 @@ export default function CartPage() {
               <Button black="true" block="true" onClick={goToPayment}>
                 Continue to payment
               </Button>
-            </Box>
+            </WhiteBox>
           )}
         </ColumnsWrapper>
       </Center>
