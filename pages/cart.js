@@ -51,7 +51,8 @@ const CityHolder = styled.div`
 `;
 
 export default function CartPage() {
-  const { cartProducts, addProduct, removeProduct } = useContext(CartContext);
+  const { cartProducts, addProduct, removeProduct, clearCart } =
+    useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -59,6 +60,7 @@ export default function CartPage() {
   const [postalCode, setPostalCode] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
   const [country, setCounty] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     if (cartProducts.length > 0) {
@@ -69,6 +71,17 @@ export default function CartPage() {
       setProducts([]);
     }
   }, [cartProducts]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.location.href.includes("success")) {
+        clearCart();
+        setIsSuccess(true);
+      } else {
+        setIsSuccess(false);
+      }
+    }
+  }, []);
 
   function moreOfThisProduct(id) {
     addProduct(id);
@@ -100,7 +113,7 @@ export default function CartPage() {
     total += price;
   }
 
-  if (window.location.href.includes("success")) {
+  if (isSuccess) {
     return (
       <>
         <Header />
@@ -115,6 +128,7 @@ export default function CartPage() {
       </>
     );
   }
+
   return (
     <>
       <Header />
@@ -223,7 +237,7 @@ export default function CartPage() {
                 name="country"
                 onChange={(ev) => setCounty(ev.target.value)}
               />
-              <Button black block onClick={goToPayment}>
+              <Button black="true" block="true" onClick={goToPayment}>
                 Continue to payment
               </Button>
             </Box>
