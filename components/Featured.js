@@ -92,7 +92,7 @@ export default function Featured({ product }) {
           </Column>
           <Column>
             <img
-              src="https://next-ecommerce-jecg.s3.amazonaws.com/1687024031905.png"
+              src="https://next-ecommerce-jecg.s3.amazonaws.com/1687444860586.png"
               alt="macbook"
             />
           </Column>
