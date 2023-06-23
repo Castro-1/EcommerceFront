@@ -2,10 +2,10 @@ import Center from "./Center";
 import { styled } from "styled-components";
 import ButtonLink from "./ButtonLink";
 import CartIcon from "./icons/CartIcon";
-import Button from "./Button";
 import { CartContext } from "./CartContext";
 import { useContext } from "react";
 import FlyingButton from "./FlyingButton";
+import { RevealWrapper } from "next-reveal";
 
 const Bg = styled.div`
   background-color: #222;
@@ -31,7 +31,7 @@ const ColumnsWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: 40px;
-  img {
+  img.main {
     max-width: 100%;
     max-height: 200px;
     display: block;
@@ -74,33 +74,38 @@ export default function Featured({ product }) {
         <ColumnsWrapper>
           <Column>
             <div>
-              <Title>{product.name}</Title>
-              <Desc>{product.description}</Desc>
-              <ButtonsWrapper>
-                <ButtonLink
-                  href={"/product/" + product._id}
-                  white="true"
-                  outline="true"
-                >
-                  Read more
-                </ButtonLink>
-                <FlyingButton
-                  white="true"
-                  _id={product._id}
-                  src={product.images[0]}
-                  onClick={addFeaturedToCart}
-                >
-                  <CartIcon />
-                  Add to cart
-                </FlyingButton>
-              </ButtonsWrapper>
+              <RevealWrapper origin="left" delay={0}>
+                <Title>{product.name}</Title>
+                <Desc>{product.description}</Desc>
+                <ButtonsWrapper>
+                  <ButtonLink
+                    href={"/product/" + product._id}
+                    white="true"
+                    outline="true"
+                  >
+                    Read more
+                  </ButtonLink>
+                  <FlyingButton
+                    white="true"
+                    _id={product._id}
+                    src={product.images[0]}
+                    onClick={addFeaturedToCart}
+                  >
+                    <CartIcon />
+                    Add to cart
+                  </FlyingButton>
+                </ButtonsWrapper>
+              </RevealWrapper>
             </div>
           </Column>
           <Column>
-            <img
-              src="https://next-ecommerce-jecg.s3.amazonaws.com/1687444860586.png"
-              alt="macbook"
-            />
+            <RevealWrapper delay={0}>
+              <img
+                className={"main"}
+                src="https://next-ecommerce-jecg.s3.amazonaws.com/1687444860586.png"
+                alt="macbook"
+              />
+            </RevealWrapper>
           </Column>
         </ColumnsWrapper>
       </Center>

@@ -5,6 +5,7 @@ const WhiteBox = styled.div`
   border-radius: 10px;
   margin-top: 40px;
   padding: 30px;
+  ${(props) => (props.small ? `max-height: 300px;` : ``)}
 `;
 
 export default WhiteBox;
