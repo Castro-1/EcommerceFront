@@ -6,10 +6,10 @@ import { Product } from "@/models/Product";
 import WhiteBox from "@/components/WhiteBox";
 import { styled } from "styled-components";
 import ProductImages from "@/components/ProductImages";
-import Button from "@/components/Button";
 import CartIcon from "@/components/icons/CartIcon";
 import { useContext } from "react";
 import { CartContext } from "@/components/CartContext";
+import FlyingButton from "@/components/FlyingButton";
 
 const ColWrapper = styled.div`
   display: grid;
@@ -32,7 +32,6 @@ const Price = styled.span`
 `;
 
 export default function ProductPage({ product }) {
-  const { addProduct } = useContext(CartContext);
   return (
     <>
       <Header />
@@ -48,10 +47,14 @@ export default function ProductPage({ product }) {
               <div>
                 <Price>${product.price}</Price>
               </div>
-              <Button primary="true" onClick={() => addProduct(product._id)}>
+              <FlyingButton
+                primary="true"
+                _id={product._id}
+                src={product.images[0]}
+              >
                 <CartIcon />
                 Add to cart
-              </Button>
+              </FlyingButton>
             </PriceRow>
           </div>
         </ColWrapper>
