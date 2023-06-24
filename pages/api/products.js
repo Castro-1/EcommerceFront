@@ -3,11 +3,20 @@ import { Product } from "@/models/Product";
 
 export default async function handle(req, res) {
   await mongooseConnect();
-  const { categories, sort, ...filters } = req.query;
-  const [sortField, sortOrder] = sort.split("-");
-  const productsQuery = {
-    category: categories.split(","),
-  };
+  const { categories, sort, phrase, ...filters } = req.query;
+  const [sortField, sortOrder] = (sort || "_id-desc").split("-");
+  const productsQuery = {};
+  if (categories) {
+    productsQuery.category = categories.split(",");
+  }
+
+  if (phrase) {
+    productsQuery["$or"] = [
+      { name: { $regex: phrase, $options: "i" } },
+      { description: { $regex: phrase, $options: "i" } },
+    ];
+  }
+
   if (Object.keys(filters).length > 0) {
     Object.keys(filters).forEach((filterName) => {
       const value = filters[filterName];

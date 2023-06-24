@@ -8,7 +8,7 @@ const Wrapper = styled.div`
       display: flex;
       justify-content: center;
    `
-      : ` border:5px solid blue;`}
+      : ``}
 `;
 
 export default function Spinner(props) {
