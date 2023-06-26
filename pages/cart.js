@@ -71,7 +71,7 @@ export default function CartPage() {
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
-  const [country, setCounty] = useState("");
+  const [country, setCountry] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
@@ -93,6 +93,15 @@ export default function CartPage() {
         setIsSuccess(false);
       }
     }
+
+    axios.get("/api/address").then((res) => {
+      setName(res.data.name);
+      setCity(res.data.city);
+      setEmail(res.data.email);
+      setStreetAddress(res.data.streetAddress);
+      setCountry(res.data.country);
+      setPostalCode(res.data.postalCode);
+    });
   }, []);
 
   function moreOfThisProduct(id) {
@@ -250,7 +259,7 @@ export default function CartPage() {
                   placeholder="Country"
                   value={country}
                   name="country"
-                  onChange={(ev) => setCounty(ev.target.value)}
+                  onChange={(ev) => setCountry(ev.target.value)}
                 />
                 <Button black="true" block="true" onClick={goToPayment}>
                   Continue to payment

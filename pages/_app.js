@@ -9,7 +9,13 @@ body{
   padding:0;
   margin:0;
   font-family: "Poppins", sans-serif;
-}`;
+}
+hr{
+  display: block;
+  border-top: 1px solid #ccc;
+}
+
+`;
 
 export default function App({
   Component,
