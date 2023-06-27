@@ -10,11 +10,15 @@ import Input from "@/components/Input";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "@/components/Spinner";
+import ProductWhiteBox from "@/components/ProductBox";
 
 const ColsWrapper = styled.div`
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   gap: 40px;
+  p {
+    margin: 5px;
+  }
 `;
 
 const CityHolder = styled.div`
@@ -22,16 +26,24 @@ const CityHolder = styled.div`
   gap: 5px;
 `;
 
+const WishedProductsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+`;
+
 export default function AccountPage() {
   const { data: session } = useSession();
 
-  const [loaded, setLoaded] = useState(false);
+  const [addressLoaded, setAddressLoaded] = useState(true);
+  const [wishlistLoaded, setWishlistLoaded] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
   const [country, setCountry] = useState("");
+  const [wishedProducts, setWishedProducts] = useState([]);
 
   async function logout() {
     await signOut({ callbackUrl: process.env.NEXT_PUBLIC_URL });
@@ -49,6 +61,11 @@ export default function AccountPage() {
   }
 
   useEffect(() => {
+    if (!session) {
+      return;
+    }
+    setAddressLoaded(false);
+    setWishlistLoaded(false);
     axios.get("/api/address").then((res) => {
       setName(res.data.name);
       setCity(res.data.city);
@@ -56,9 +73,20 @@ export default function AccountPage() {
       setStreetAddress(res.data.streetAddress);
       setCountry(res.data.country);
       setPostalCode(res.data.postalCode);
+      setAddressLoaded(true);
     });
-    setLoaded(true);
-  }, []);
+
+    axios.get("/api/wishlist").then((res) => {
+      setWishedProducts(res.data.map((wp) => wp.product));
+      setWishlistLoaded(true);
+    });
+  }, [session]);
+
+  function productRemovedFromWishlist(idToRemove) {
+    setWishedProducts((products) => {
+      return [...products.filter((p) => p._id.toString() !== idToRemove)];
+    });
+  }
 
   return (
     <>
@@ -70,15 +98,39 @@ export default function AccountPage() {
             <RevealWrapper>
               <WhiteBox>
                 <h2>Wishlist</h2>
+                {!wishlistLoaded && <Spinner fullWidth={true} />}
+                {wishlistLoaded && (
+                  <>
+                    <WishedProductsGrid>
+                      {wishedProducts.length > 0 &&
+                        wishedProducts.map((wp) => (
+                          <ProductWhiteBox
+                            key={wp._id}
+                            {...wp}
+                            wished={true}
+                            onRemoveFromWishlist={productRemovedFromWishlist}
+                          />
+                        ))}
+                    </WishedProductsGrid>
+                    {wishedProducts.length === 0 && (
+                      <>
+                        {session && <p>Your wishlist is empty.</p>}
+                        {!session && (
+                          <p>Login to add products to your wishlist.</p>
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
               </WhiteBox>
             </RevealWrapper>
           </div>
           <diV>
             <RevealWrapper delay={100}>
               <WhiteBox>
-                <h2>Account details</h2>
-                {!loaded && <Spinner fullWidth={true} />}
-                {loaded && (
+                <h2>{session ? "Account details" : "Login"}</h2>
+                {!addressLoaded && <Spinner fullWidth={true} />}
+                {addressLoaded && session && (
                   <>
                     <Input
                       type="text"
@@ -127,16 +179,16 @@ export default function AccountPage() {
                     <Button black="true" block="true" onClick={saveAddress}>
                       Save
                     </Button>
+                    <hr />
                   </>
                 )}
-                <hr />
                 {session ? (
                   <Button primary="true" onClick={logout}>
                     Logout
                   </Button>
                 ) : (
                   <Button primary="true" onClick={login}>
-                    Login
+                    Login with Google
                   </Button>
                 )}
               </WhiteBox>

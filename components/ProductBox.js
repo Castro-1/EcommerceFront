@@ -5,6 +5,7 @@ import HeartOutlineIcon from "./icons/HeartOulineIcon";
 import { useEffect, useState } from "react";
 import HeartSolidIcon from "./icons/HeartSolidIcon";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 const ProductWrapper = styled.div`
   button {
@@ -84,14 +85,20 @@ export default function ProductWhiteBox({
   price,
   images,
   wished = false,
+  onRemoveFromWishlist = () => {},
 }) {
   const url = "/product/" + _id;
+  const { data: session } = useSession();
 
   const [isWished, setIsWished] = useState(wished);
 
   function addToWishlist(ev) {
     ev.preventDefault();
+    if (!session) return;
     const nextValue = !isWished;
+    if (nextValue === false && onRemoveFromWishlist) {
+      onRemoveFromWishlist(_id);
+    }
     axios
       .post("/api/wishlist", {
         product: _id,

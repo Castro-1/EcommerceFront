@@ -21,4 +21,10 @@ export default async function handel(req, res) {
       res.json("created");
     }
   }
+
+  if (req.method === "GET") {
+    res.json(
+      await WishedProduct.find({ userEmail: user.email }).populate("product")
+    );
+  }
 }

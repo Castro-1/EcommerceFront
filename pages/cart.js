@@ -9,6 +9,7 @@ import Table from "@/components/Table";
 import Input from "@/components/Input";
 import WhiteBox from "@/components/WhiteBox";
 import { RevealWrapper } from "next-reveal";
+import { useSession } from "next-auth/react";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -65,6 +66,7 @@ const CityHolder = styled.div`
 export default function CartPage() {
   const { cartProducts, addProduct, removeProduct, clearCart } =
     useContext(CartContext);
+  const { data: session } = useSession();
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -93,7 +95,12 @@ export default function CartPage() {
         setIsSuccess(false);
       }
     }
+  }, []);
 
+  useEffect(() => {
+    if (!session) {
+      return;
+    }
     axios.get("/api/address").then((res) => {
       setName(res.data.name);
       setCity(res.data.city);
@@ -102,7 +109,7 @@ export default function CartPage() {
       setCountry(res.data.country);
       setPostalCode(res.data.postalCode);
     });
-  }, []);
+  }, [session]);
 
   function moreOfThisProduct(id) {
     addProduct(id);
