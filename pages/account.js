@@ -12,6 +12,7 @@ import axios from "axios";
 import Spinner from "@/components/Spinner";
 import ProductWhiteBox from "@/components/ProductBox";
 import Tabs from "@/components/Tabs";
+import SingleOrder from "@/components/SingleOrder";
 
 const ColsWrapper = styled.div`
   display: grid;
@@ -115,7 +116,18 @@ export default function AccountPage() {
                 {activeTab === "Orders" && (
                   <>
                     {!ordersLoaded && <Spinner fullWidth={true} />}
-                    {ordersLoaded && <div>{orders.length}</div>}
+                    {ordersLoaded && (
+                      <div>
+                        {orders.length > 0 &&
+                          orders.map((o, i) => <SingleOrder key={i} {...o} />)}
+                        {orders.length === 0 && (
+                          <>
+                            {session && <p>You don&apos;t have any orders.</p>}
+                            {!session && <p>Login to see your orders.</p>}
+                          </>
+                        )}
+                      </div>
+                    )}
                   </>
                 )}
                 {activeTab === "Wishlist" && (

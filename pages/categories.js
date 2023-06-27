@@ -115,7 +115,7 @@ export async function getServerSideProps(ctx) {
   const session = await getServerSession(ctx.req, ctx.res, authOptions);
   const wishedProducts = session?.user
     ? await WishedProduct.find({
-        userEmail: user.email,
+        userEmail: session.user.email,
         product: allFetchedProductsId,
       })
     : [];
