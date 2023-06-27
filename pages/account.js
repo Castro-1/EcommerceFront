@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "@/components/Spinner";
 import ProductWhiteBox from "@/components/ProductBox";
+import Tabs from "@/components/Tabs";
 
 const ColsWrapper = styled.div`
   display: grid;
@@ -37,6 +38,7 @@ export default function AccountPage() {
 
   const [addressLoaded, setAddressLoaded] = useState(true);
   const [wishlistLoaded, setWishlistLoaded] = useState(true);
+  const [ordersLoaded, setOrdersLoaded] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [city, setCity] = useState("");
@@ -44,6 +46,8 @@ export default function AccountPage() {
   const [streetAddress, setStreetAddress] = useState("");
   const [country, setCountry] = useState("");
   const [wishedProducts, setWishedProducts] = useState([]);
+  const [activeTab, setActiveTab] = useState("Orders");
+  const [orders, setOrders] = useState([]);
 
   async function logout() {
     await signOut({ callbackUrl: process.env.NEXT_PUBLIC_URL });
@@ -66,6 +70,7 @@ export default function AccountPage() {
     }
     setAddressLoaded(false);
     setWishlistLoaded(false);
+    setOrdersLoaded(false);
     axios.get("/api/address").then((res) => {
       setName(res.data.name);
       setCity(res.data.city);
@@ -79,6 +84,11 @@ export default function AccountPage() {
     axios.get("/api/wishlist").then((res) => {
       setWishedProducts(res.data.map((wp) => wp.product));
       setWishlistLoaded(true);
+    });
+
+    axios.get("/api/orders").then((res) => {
+      setOrders(res.data);
+      setOrdersLoaded(true);
     });
   }, [session]);
 
@@ -97,26 +107,42 @@ export default function AccountPage() {
           <div>
             <RevealWrapper>
               <WhiteBox>
-                <h2>Wishlist</h2>
-                {!wishlistLoaded && <Spinner fullWidth={true} />}
-                {wishlistLoaded && (
+                <Tabs
+                  tabs={["Orders", "Wishlist"]}
+                  active={activeTab}
+                  onChange={setActiveTab}
+                />
+                {activeTab === "Orders" && (
                   <>
-                    <WishedProductsGrid>
-                      {wishedProducts.length > 0 &&
-                        wishedProducts.map((wp) => (
-                          <ProductWhiteBox
-                            key={wp._id}
-                            {...wp}
-                            wished={true}
-                            onRemoveFromWishlist={productRemovedFromWishlist}
-                          />
-                        ))}
-                    </WishedProductsGrid>
-                    {wishedProducts.length === 0 && (
+                    {!ordersLoaded && <Spinner fullWidth={true} />}
+                    {ordersLoaded && <div>{orders.length}</div>}
+                  </>
+                )}
+                {activeTab === "Wishlist" && (
+                  <>
+                    {!wishlistLoaded && <Spinner fullWidth={true} />}
+                    {wishlistLoaded && (
                       <>
-                        {session && <p>Your wishlist is empty.</p>}
-                        {!session && (
-                          <p>Login to add products to your wishlist.</p>
+                        <WishedProductsGrid>
+                          {wishedProducts.length > 0 &&
+                            wishedProducts.map((wp) => (
+                              <ProductWhiteBox
+                                key={wp._id}
+                                {...wp}
+                                wished={true}
+                                onRemoveFromWishlist={
+                                  productRemovedFromWishlist
+                                }
+                              />
+                            ))}
+                        </WishedProductsGrid>
+                        {wishedProducts.length === 0 && (
+                          <>
+                            {session && <p>Your wishlist is empty.</p>}
+                            {!session && (
+                              <p>Login to add products to your wishlist.</p>
+                            )}
+                          </>
                         )}
                       </>
                     )}
