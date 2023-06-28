@@ -73,12 +73,12 @@ export default function AccountPage() {
     setWishlistLoaded(false);
     setOrdersLoaded(false);
     axios.get("/api/address").then((res) => {
-      setName(res.data.name);
-      setCity(res.data.city);
-      setEmail(res.data.email);
-      setStreetAddress(res.data.streetAddress);
-      setCountry(res.data.country);
-      setPostalCode(res.data.postalCode);
+      setName(res.data?.name || "");
+      setCity(res.data?.city || "");
+      setEmail(res.data?.email || "");
+      setStreetAddress(res.data?.streetAddress || "");
+      setCountry(res.data?.country || "");
+      setPostalCode(res.data?.postalCode || "");
       setAddressLoaded(true);
     });
 

@@ -54,6 +54,7 @@ const ColumnsWrapper = styled.div`
 const Column = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const ButtonsWrapper = styled.div`
@@ -100,11 +101,7 @@ export default function Featured({ product }) {
           </Column>
           <Column>
             <RevealWrapper delay={0}>
-              <img
-                className={"main"}
-                src="https://next-ecommerce-jecg.s3.amazonaws.com/1687444860586.png"
-                alt="macbook"
-              />
+              <img className={"main"} src={product.images?.[0]} alt="macbook" />
             </RevealWrapper>
           </Column>
         </ColumnsWrapper>
