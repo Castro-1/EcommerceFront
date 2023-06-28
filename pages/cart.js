@@ -18,6 +18,21 @@ const ColumnsWrapper = styled.div`
     grid-template-columns: 1.2fr 0.8fr;
   }
   gap: 40px;
+  margin: 40px 0;
+  table thead tr th:nth-child(3),
+  table tbody tr td:nth-child(3),
+  table tbody tr.subtotal td:nth-child(2) {
+    text-align: right;
+  }
+  table tr.subtotal td {
+    padding: 15px 0;
+  }
+  table tbody tr.subtotal td:nth-child(2) {
+    font-size: 1.4rem;
+  }
+  tr.total td {
+    font-weight: bold;
+  }
 `;
 
 const ProductInfoCell = styled.td`
@@ -75,6 +90,7 @@ export default function CartPage() {
   const [streetAddress, setStreetAddress] = useState("");
   const [country, setCountry] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [shippingFee, setShippingFee] = useState(null);
 
   useEffect(() => {
     if (cartProducts.length > 0) {
@@ -95,6 +111,9 @@ export default function CartPage() {
         setIsSuccess(false);
       }
     }
+    axios.get("api/settings?name=shippingFee").then((res) => {
+      setShippingFee(res.data.value);
+    });
   }, []);
 
   useEffect(() => {
@@ -102,12 +121,12 @@ export default function CartPage() {
       return;
     }
     axios.get("/api/address").then((res) => {
-      setName(res.data.name);
-      setCity(res.data.city);
-      setEmail(res.data.email);
-      setStreetAddress(res.data.streetAddress);
-      setCountry(res.data.country);
-      setPostalCode(res.data.postalCode);
+      setName(res.data?.name);
+      setCity(res.data?.city);
+      setEmail(res.data?.email);
+      setStreetAddress(res.data?.streetAddress);
+      setCountry(res.data?.country);
+      setPostalCode(res.data?.postalCode);
     });
   }, [session]);
 
@@ -134,11 +153,11 @@ export default function CartPage() {
     }
   }
 
-  let total = 0;
+  let productsTotal = 0;
 
   for (const productId of cartProducts) {
     const price = products.find((p) => p._id === productId)?.price;
-    total += price;
+    productsTotal += price;
   }
 
   if (isSuccess) {
@@ -209,10 +228,17 @@ export default function CartPage() {
                           </td>
                         </tr>
                       ))}
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td>${total}</td>
+                      <tr className="subtotal">
+                        <td colSpan={2}>Products</td>
+                        <td>${productsTotal}</td>
+                      </tr>
+                      <tr className="subtotal">
+                        <td colSpan={2}>Shipping</td>
+                        <td>${shippingFee}</td>
+                      </tr>
+                      <tr className="subtotal total">
+                        <td colSpan={2}>Total</td>
+                        <td>${productsTotal + parseInt(shippingFee || 0)}</td>
                       </tr>
                     </tbody>
                   </Table>
