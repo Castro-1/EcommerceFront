@@ -33,7 +33,10 @@ export default function CartContextProvider({ children }) {
   }
 
   function clearCart() {
-    setCartProducts([]);
+    if (ls && ls.getItem("cart")) {
+      setCartProducts([]);
+      ls.setItem("cart", JSON.stringify(cartProducts));
+    }
   }
 
   return (

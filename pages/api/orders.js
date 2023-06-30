@@ -7,5 +7,14 @@ export default async function handle(req, res) {
   await mongooseConnect();
 
   const session = await getServerSession(req, res, authOptions);
-  res.json(await Order.find({ userEmail: session?.user.email }));
+  if (req.method === "GET") {
+    res.json(await Order.find({ userEmail: session?.user.email }));
+  }
+
+  if (req.method === "DELETE") {
+    if (req.query?.id) {
+      await Order.deleteOne({ _id: req.query.id });
+      res.json(true);
+    }
+  }
 }

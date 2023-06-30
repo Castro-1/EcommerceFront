@@ -10,6 +10,7 @@ import Input from "@/components/Input";
 import WhiteBox from "@/components/WhiteBox";
 import { RevealWrapper } from "next-reveal";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -91,6 +92,7 @@ export default function CartPage() {
   const [country, setCountry] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [shippingFee, setShippingFee] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (cartProducts.length > 0) {
@@ -104,17 +106,31 @@ export default function CartPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (window.location.href.includes("success")) {
+      const link = window.location.href;
+      if (link.includes("success")) {
+        console.log("entró");
         clearCart();
-        setIsSuccess(true);
-      } else {
-        setIsSuccess(false);
+        setIsSuccess("success");
+      } else if (link.includes("cancel")) {
+        setIsSuccess(link.toString());
       }
     }
     axios.get("api/settings?name=shippingFee").then((res) => {
       setShippingFee(res.data.value);
     });
   }, []);
+
+  useEffect(() => {
+    if (isSuccess === "success" || isSuccess === false) return;
+    console.log(isSuccess);
+    const orderId = isSuccess.substring(
+      isSuccess.indexOf("=") + 1,
+      isSuccess.length
+    );
+    axios.delete("/api/orders?id=" + orderId).then((res) => {
+      router.push("/cart");
+    });
+  }, [isSuccess]);
 
   useEffect(() => {
     if (!session) {
@@ -160,7 +176,7 @@ export default function CartPage() {
     productsTotal += price;
   }
 
-  if (isSuccess) {
+  if (isSuccess === "success") {
     return (
       <>
         <Header />

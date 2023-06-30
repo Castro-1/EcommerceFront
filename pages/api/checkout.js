@@ -60,14 +60,14 @@ export default async function handler(req, res) {
 
   const shippingFeeSetting = await Setting.findOne({ name: "shippingFee" });
   const shippingFeeCents = parseInt(shippingFeeSetting.value || "0") * 100;
-
+  const orderId = orderDoc._id.toString();
   const stripeSession = await stripe.checkout.sessions.create({
     line_items,
     mode: "payment",
     customer_email: email,
     success_url: process.env.PUBLIC_URL + "/cart?success=1",
-    cancel_url: process.env.PUBLIC_URL + "/cart?cancel=1",
-    metadata: { orderId: orderDoc._id.toString() },
+    cancel_url: process.env.PUBLIC_URL + "/cart?cancel=" + orderId,
+    metadata: { orderId },
     allow_promotion_codes: true,
     shipping_options: [
       {
