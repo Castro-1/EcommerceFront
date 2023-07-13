@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import { CartContext } from "./CartContext";
 import BarsIcon from "./icons/Bars";
 import SearchIcon from "./icons/SearchIcon";
+import CartIcon from "./icons/CartIcon";
 
 const StyledHeader = styled.header`
   background-color: #222;
@@ -44,11 +45,16 @@ const StyledNav = styled.nav`
 `;
 
 const NavLink = styled(Link)`
-  display: block;
+  display: flex;
+  justify-conten: center;
   color: #aaa;
   text-decoration: none;
   min-width: 30px;
   padding: 10px 0;
+  transition: 0.3s ease-in-out;
+  &:hover {
+    color: #eee;
+  }
   @media screen and (min-width: 768px) {
     padding: 0;
   }
@@ -95,7 +101,10 @@ export default function Header() {
             <NavLink href={"/products"}>All products</NavLink>
             <NavLink href={"/categories"}>Categories</NavLink>
             <NavLink href={"/account"}>Account</NavLink>
-            <NavLink href={"/cart"}>Cart ({cartProducts.length})</NavLink>
+            <NavLink href={"/cart"}>
+              {" "}
+              <CartIcon /> ({cartProducts.length})
+            </NavLink>
           </StyledNav>
           <SideIcons>
             <Link href={"/search"}>

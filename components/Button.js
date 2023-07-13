@@ -12,6 +12,7 @@ export const ButtonStyle = css`
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-size: 16px;
+  transition: 0.3s ease-in-out;
   svg {
     height: 16px;
     margin-right: 5px;
@@ -68,6 +69,11 @@ export const ButtonStyle = css`
       background-color: transparent;
       color: ${primary};
       border: 1px solid ${primary};
+      &:hover {
+        background-color: ${primary};
+        color: #fff;
+        border: 1px solid ${primary};
+      }
     `};
   ${(props) =>
     props.size === "l" &&
