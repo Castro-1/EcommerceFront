@@ -11,6 +11,8 @@ import WhiteBox from "@/components/WhiteBox";
 import { RevealWrapper } from "next-reveal";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import ErrorIcon from "@/components/icons/ErrorIcon";
+import css from "styled-jsx/css";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -79,6 +81,38 @@ const CityHolder = styled.div`
   gap: 5px;
 `;
 
+const Alert = styled.div`
+  @keyframes disappear {
+    0% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  position: absolute;
+  background-color: red;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  top: 45px;
+  left: 75px;
+  opacity: 0;
+  ${(props) =>
+    props.showAlert &&
+    css`
+      animation-name: disappear;
+      animation-duration: 5s;
+    `}
+`;
+
 export default function CartPage() {
   const { cartProducts, addProduct, removeProduct, clearCart } =
     useContext(CartContext);
@@ -92,6 +126,7 @@ export default function CartPage() {
   const [country, setCountry] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [shippingFee, setShippingFee] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -155,6 +190,20 @@ export default function CartPage() {
   }
 
   async function goToPayment() {
+    if (
+      name === "" ||
+      email === "" ||
+      city === "" ||
+      postalCode === "" ||
+      country === "" ||
+      streetAddress === ""
+    ) {
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 5100);
+      return;
+    }
     const response = await axios.post("/api/checkout", {
       name,
       email,
@@ -266,6 +315,11 @@ export default function CartPage() {
             <RevealWrapper delay={100}>
               <WhiteBox small="true">
                 <h2>Order Information</h2>
+                {showAlert && (
+                  <Alert showAlert={showAlert}>
+                    <ErrorIcon /> Fill out all fields
+                  </Alert>
+                )}
                 <Input
                   type="text"
                   placeholder="Name"
