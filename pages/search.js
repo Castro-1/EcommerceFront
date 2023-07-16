@@ -33,7 +33,7 @@ export default function SearchPage() {
       setIsLoading(true);
       debouncedSearch(phrase);
     } else {
-      setProducts([]);
+      debouncedSearch("");
     }
   }, [phrase]);
 

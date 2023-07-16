@@ -7,6 +7,9 @@ import Button from "./Button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "./Spinner";
+import { useSession } from "next-auth/react";
+import ErrorIcon from "./icons/ErrorIcon";
+import css from "styled-jsx/css";
 
 const Title = styled.h2`
   font-size: 1.2rem;
@@ -55,13 +58,54 @@ const ReviewHeader = styled.div`
   }
 `;
 
+const Alert = styled.div`
+  @keyframes disappear {
+    0% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  position: absolute;
+  background-color: red;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  left: 22%;
+  bottom: 42%;
+  gap: 5px;
+  opacity: 0;
+  ${(props) =>
+    props.showAlert &&
+    css`
+      animation-name: disappear;
+      animation-duration: 5s;
+    `}
+`;
+
 export default function ProductReviews({ product }) {
+  const { data: session } = useSession();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [stars, setStars] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   function submitReview() {
+    if (!session) {
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 5100);
+      return;
+    }
     const data = {
       title,
       description,
@@ -90,6 +134,11 @@ export default function ProductReviews({ product }) {
         <div>
           <WhiteBox>
             <Subtitle>Add review</Subtitle>
+            {showAlert && (
+              <Alert showAlert={showAlert}>
+                <ErrorIcon /> Login to submit review
+              </Alert>
+            )}
             <StarsRating
               onChange={(n) => {
                 setStars((prev) => (prev === n ? 0 : n));

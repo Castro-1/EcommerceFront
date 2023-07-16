@@ -14,7 +14,7 @@ export const ButtonStyle = css`
   font-size: 16px;
   transition: 0.3s ease-in-out;
   &:hover {
-    background-color: #cccd;
+    background-color: #ccc;
   }
   svg {
     height: 16px;
@@ -33,6 +33,9 @@ export const ButtonStyle = css`
       background-color: #fff;
       color: #000;
       border: 1px solid #fff;
+      &:hover {
+        background-color: #eee;
+      }
     `};
   ${(props) =>
     props.white &&
@@ -41,6 +44,11 @@ export const ButtonStyle = css`
       background-color: transparent;
       color: #fff;
       border: 1px solid #fff;
+      &:hover {
+        color: #eee;
+        border: 1px solid #eee;
+        background-color: transparent;
+      }
     `};
   ${(props) =>
     props.black &&
@@ -48,6 +56,9 @@ export const ButtonStyle = css`
     css`
       background-color: #000;
       color: #fff;
+      &:hover {
+        background-color: #000;
+      }
     `};
   ${(props) =>
     props.black &&
@@ -64,6 +75,10 @@ export const ButtonStyle = css`
       background-color: ${primary};
       color: #fff;
       border: 1px solid ${primary};
+      &:hover {
+        background-color: ${primary};
+        border: 1px solid ${primary};
+      }
     `};
   ${(props) =>
     props.primary &&
