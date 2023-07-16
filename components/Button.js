@@ -13,12 +13,12 @@ export const ButtonStyle = css`
   font-weight: 400;
   font-size: 16px;
   transition: 0.3s ease-in-out;
+  gap: 5px;
   &:hover {
     background-color: #ccc;
   }
   svg {
     height: 16px;
-    margin-right: 5px;
   }
   ${(props) =>
     props.block &&

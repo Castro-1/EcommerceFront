@@ -8,8 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "./Spinner";
 import { useSession } from "next-auth/react";
-import ErrorIcon from "./icons/ErrorIcon";
-import css from "styled-jsx/css";
+import ErrorAlert from "./ErrorAlert";
 
 const Title = styled.h2`
   font-size: 1.2rem;
@@ -58,36 +57,18 @@ const ReviewHeader = styled.div`
   }
 `;
 
-const Alert = styled.div`
-  @keyframes disappear {
-    0% {
-      opacity: 1;
-    }
-    70% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
+const AlertContainer = styled.div`
   position: absolute;
-  background-color: red;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: #fff;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  left: 22%;
-  bottom: 42%;
-  gap: 5px;
-  opacity: 0;
-  ${(props) =>
-    props.showAlert &&
-    css`
-      animation-name: disappear;
-      animation-duration: 5s;
-    `}
+  top: -18%;
+  right: -11%;
+  @media screen and (min-width: 768px) {
+    top: -10%;
+    right: 0%;
+  }
+`;
+
+const ReviewFormContainer = styled.div`
+  position: relative;
 `;
 
 export default function ProductReviews({ product }) {
@@ -133,33 +114,38 @@ export default function ProductReviews({ product }) {
       <ColsWrapper>
         <div>
           <WhiteBox>
-            <Subtitle>Add review</Subtitle>
-            {showAlert && (
-              <Alert showAlert={showAlert}>
-                <ErrorIcon /> Login to submit review
-              </Alert>
-            )}
-            <StarsRating
-              onChange={(n) => {
-                setStars((prev) => (prev === n ? 0 : n));
-              }}
-              defaultHowMany={stars}
-            />
-            <Input
-              placeholder="Title"
-              value={title}
-              onChange={(ev) => setTitle(ev.target.value)}
-            />
-            <Textarea
-              placeholder="Was it good? Pros? Cons?"
-              value={description}
-              onChange={(ev) => setDescription(ev.target.value)}
-            />
-            <div>
-              <Button primary="true" onClick={submitReview}>
-                Submit your review
-              </Button>
-            </div>
+            <ReviewFormContainer>
+              <Subtitle>Add review</Subtitle>
+              {showAlert && (
+                <AlertContainer>
+                  <ErrorAlert
+                    showAlert={showAlert}
+                    content="Login to submit review"
+                  />
+                </AlertContainer>
+              )}
+              <StarsRating
+                onChange={(n) => {
+                  setStars((prev) => (prev === n ? 0 : n));
+                }}
+                defaultHowMany={stars}
+              />
+              <Input
+                placeholder="Title"
+                value={title}
+                onChange={(ev) => setTitle(ev.target.value)}
+              />
+              <Textarea
+                placeholder="Was it good? Pros? Cons?"
+                value={description}
+                onChange={(ev) => setDescription(ev.target.value)}
+              />
+              <div>
+                <Button primary="true" onClick={submitReview}>
+                  Submit your review
+                </Button>
+              </div>
+            </ReviewFormContainer>
           </WhiteBox>
         </div>
         <div>

@@ -2,10 +2,11 @@ import { styled } from "styled-components";
 import Link from "next/link";
 import FlyingButton from "./FlyingButton";
 import HeartOutlineIcon from "./icons/HeartOulineIcon";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import HeartSolidIcon from "./icons/HeartSolidIcon";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import ErrorAlert from "./ErrorAlert";
 
 const ProductWrapper = styled.div`
   button {
@@ -79,6 +80,19 @@ const WishlistButton = styled.button`
   }
 `;
 
+const AlertContainer = styled.div`
+  position: absolute;
+  z-index: 10;
+  & > div {
+    font-size: 14px;
+    margin: 5px;
+    padding: 2px 5px;
+    div {
+      width: 20px;
+    }
+  }
+`;
+
 export default function ProductWhiteBox({
   _id,
   name,
@@ -90,11 +104,18 @@ export default function ProductWhiteBox({
   const url = "/product/" + _id;
   const { data: session } = useSession();
 
-  const [isWished, setIsWished] = useState(wished);
+  const [isWished, setIsWished] = useState(wished || false);
+  const [showAlert, setShowAlert] = useState(false);
 
   function addToWishlist(ev) {
     ev.preventDefault();
-    if (!session) return;
+    if (!session) {
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 5100);
+      return;
+    }
     const nextValue = !isWished;
     if (nextValue === false && onRemoveFromWishlist) {
       onRemoveFromWishlist(_id);
@@ -109,6 +130,11 @@ export default function ProductWhiteBox({
 
   return (
     <ProductWrapper>
+      {showAlert && (
+        <AlertContainer>
+          <ErrorAlert showAlert={showAlert} content="Login to add" />
+        </AlertContainer>
+      )}
       <WhiteBox href={url}>
         <div>
           <WishlistButton wished={isWished} onClick={addToWishlist}>
@@ -121,7 +147,7 @@ export default function ProductWhiteBox({
         <Title href={url}>{name}</Title>
         <PriceRow>
           <Price>${price}</Price>
-          <FlyingButton primary="true" outline="true" src={images[0]} _id={_id}>
+          <FlyingButton primary="true" src={images[0]} _id={_id}>
             Add to cart
           </FlyingButton>
         </PriceRow>

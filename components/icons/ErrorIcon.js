@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 const IconContainer = styled.div`
   width: 25px;
-  margin-top: 5px;
+  display: flex;
 `;
 
 export default function ErrorIcon({ className = "w-6 h-6" }) {

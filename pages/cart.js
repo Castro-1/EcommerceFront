@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import ErrorIcon from "@/components/icons/ErrorIcon";
 import css from "styled-jsx/css";
+import ErrorAlert from "@/components/ErrorAlert";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -90,36 +91,14 @@ const CityHolder = styled.div`
   gap: 5px;
 `;
 
-const Alert = styled.div`
-  @keyframes disappear {
-    0% {
-      opacity: 1;
-    }
-    70% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
+const AlertContainer = styled.div`
   position: absolute;
-  background-color: red;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: #fff;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  top: 45px;
-  left: 75px;
-  opacity: 0;
-  ${(props) =>
-    props.showAlert &&
-    css`
-      animation-name: disappear;
-      animation-duration: 5s;
-    `}
+  top: -15%;
+  right: 20%;
+`;
+
+const OrderFormContainer = styled.div`
+  position: relative;
 `;
 
 export default function CartPage() {
@@ -326,65 +305,70 @@ export default function CartPage() {
           {!!products?.length && (
             <RevealWrapper delay={100}>
               <WhiteBox small="true">
-                <h2>Order Information</h2>
-                {showAlert && (
-                  <Alert showAlert={showAlert}>
-                    <ErrorIcon /> Fill out all fields
-                  </Alert>
-                )}
-                <Input
-                  type="text"
-                  placeholder="Name"
-                  value={name}
-                  name="name"
-                  required
-                  onChange={(ev) => setName(ev.target.value)}
-                />
-                <Input
-                  type="text"
-                  placeholder="Email"
-                  value={email}
-                  name="email"
-                  required
-                  onChange={(ev) => setEmail(ev.target.value)}
-                />
-                <CityHolder>
+                <OrderFormContainer>
+                  <h2>Order Information</h2>
+                  {showAlert && (
+                    <AlertContainer>
+                      <ErrorAlert
+                        showAlert={showAlert}
+                        content="Fill out all fields"
+                      />
+                    </AlertContainer>
+                  )}
                   <Input
                     type="text"
-                    placeholder="City"
-                    value={city}
-                    name="city"
+                    placeholder="Name"
+                    value={name}
+                    name="name"
                     required
-                    onChange={(ev) => setCity(ev.target.value)}
+                    onChange={(ev) => setName(ev.target.value)}
                   />
                   <Input
                     type="text"
-                    placeholder="Postal Code"
-                    value={postalCode}
-                    name="postalCode"
+                    placeholder="Email"
+                    value={email}
+                    name="email"
                     required
-                    onChange={(ev) => setPostalCode(ev.target.value)}
+                    onChange={(ev) => setEmail(ev.target.value)}
                   />
-                </CityHolder>
-                <Input
-                  type="text"
-                  placeholder="Street Address"
-                  value={streetAddress}
-                  name="streetAddress"
-                  required
-                  onChange={(ev) => setStreetAddress(ev.target.value)}
-                />
-                <Input
-                  type="text"
-                  placeholder="Country"
-                  value={country}
-                  name="country"
-                  required
-                  onChange={(ev) => setCountry(ev.target.value)}
-                />
-                <Button black="true" block="true" onClick={goToPayment}>
-                  Continue to payment
-                </Button>
+                  <CityHolder>
+                    <Input
+                      type="text"
+                      placeholder="City"
+                      value={city}
+                      name="city"
+                      required
+                      onChange={(ev) => setCity(ev.target.value)}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Postal Code"
+                      value={postalCode}
+                      name="postalCode"
+                      required
+                      onChange={(ev) => setPostalCode(ev.target.value)}
+                    />
+                  </CityHolder>
+                  <Input
+                    type="text"
+                    placeholder="Street Address"
+                    value={streetAddress}
+                    name="streetAddress"
+                    required
+                    onChange={(ev) => setStreetAddress(ev.target.value)}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Country"
+                    value={country}
+                    name="country"
+                    required
+                    onChange={(ev) => setCountry(ev.target.value)}
+                  />
+                  <Button black="true" block="true" onClick={goToPayment}>
+                    Continue to payment
+                  </Button>
+                </OrderFormContainer>
               </WhiteBox>
             </RevealWrapper>
           )}

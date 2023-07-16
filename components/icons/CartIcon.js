@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 
 const IconContainer = styled.div`
   width: 21px;
+  display: flex;
 `;
 
 export default function CartIcon({ className = "w-6 h-6" }) {
