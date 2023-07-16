@@ -42,6 +42,15 @@ const ProductInfoCell = styled.td`
   padding: 10px 0;
 `;
 
+const QuantityButtonCell = styled.div`
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-flow: column-reverse;
+  }
+`;
+
 const ProductImageBox = styled.div`
   width: 70px;
   height: 70px;
@@ -269,22 +278,25 @@ export default function CartPage() {
                             {product.name}
                           </ProductInfoCell>
                           <td>
-                            <Button
-                              onClick={() => lessOfThisProduct(product._id)}
-                            >
-                              -
-                            </Button>
-                            <QuantityLabel>
-                              {
-                                cartProducts.filter((id) => id === product._id)
-                                  .length
-                              }
-                            </QuantityLabel>
-                            <Button
-                              onClick={() => moreOfThisProduct(product._id)}
-                            >
-                              +
-                            </Button>
+                            <QuantityButtonCell>
+                              <Button
+                                onClick={() => lessOfThisProduct(product._id)}
+                              >
+                                -
+                              </Button>
+                              <QuantityLabel>
+                                {
+                                  cartProducts.filter(
+                                    (id) => id === product._id
+                                  ).length
+                                }
+                              </QuantityLabel>
+                              <Button
+                                onClick={() => moreOfThisProduct(product._id)}
+                              >
+                                +
+                              </Button>
+                            </QuantityButtonCell>
                           </td>
                           <td>
                             $

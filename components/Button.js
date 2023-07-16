@@ -13,6 +13,9 @@ export const ButtonStyle = css`
   font-weight: 400;
   font-size: 16px;
   transition: 0.3s ease-in-out;
+  &:hover {
+    background-color: #cccd;
+  }
   svg {
     height: 16px;
     margin-right: 5px;

@@ -69,6 +69,10 @@ const NavButton = styled.button`
   cursor: pointer;
   position: relative;
   z-index: 3;
+  svg {
+    width: 20x;
+    heigth: 20px;
+  }
   @media screen and (min-width: 768px) {
     display: none;
   }
