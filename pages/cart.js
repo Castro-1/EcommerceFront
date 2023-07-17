@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import ErrorIcon from "@/components/icons/ErrorIcon";
 import css from "styled-jsx/css";
 import ErrorAlert from "@/components/ErrorAlert";
+import Footer from "@/components/Footer";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -374,6 +375,7 @@ export default function CartPage() {
           )}
         </ColumnsWrapper>
       </Center>
+      <Footer />
     </>
   );
 }

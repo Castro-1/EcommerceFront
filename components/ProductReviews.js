@@ -12,6 +12,8 @@ import ErrorAlert from "./ErrorAlert";
 
 const Title = styled.h2`
   font-size: 1.2rem;
+  margin-bottom: 0;
+  margin-top: 40px;
 `;
 
 const Subtitle = styled.h3`
@@ -24,6 +26,11 @@ const ColsWrapper = styled.div`
   grid-template-columns: 1fr;
   gap: 20px;
   margin-bottom: 40px;
+  & > div {
+    & > div {
+      margin-top: 25px;
+    }
+  }
   @media screen and (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 40px;
@@ -79,13 +86,23 @@ export default function ProductReviews({ product }) {
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [content, setContent] = useState("");
+
+  function triggerAlert() {
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 5100);
+  }
   function submitReview() {
     if (!session) {
-      setShowAlert(true);
-      setTimeout(() => {
-        setShowAlert(false);
-      }, 5100);
+      setContent("Login to submit review");
+      triggerAlert();
       return;
+    }
+    if (title === "" || description === "") {
+      setContent("Fill out all fields");
+      triggerAlert();
     }
     const data = {
       title,
@@ -118,10 +135,7 @@ export default function ProductReviews({ product }) {
               <Subtitle>Add review</Subtitle>
               {showAlert && (
                 <AlertContainer>
-                  <ErrorAlert
-                    showAlert={showAlert}
-                    content="Login to submit review"
-                  />
+                  <ErrorAlert showAlert={showAlert} content={content} />
                 </AlertContainer>
               )}
               <StarsRating

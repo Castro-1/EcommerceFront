@@ -6,6 +6,8 @@ import { CartContext } from "./CartContext";
 import BarsIcon from "./icons/Bars";
 import SearchIcon from "./icons/SearchIcon";
 import CartIcon from "./icons/CartIcon";
+import css from "styled-jsx/css";
+import { primary } from "@/lib/Colors";
 
 const StyledHeader = styled.header`
   background-color: #222;
@@ -92,6 +94,18 @@ const SideIcons = styled.div`
   }
 `;
 
+const ProductsNumber = styled.div`
+  position: absolute;
+  background-color: ${primary};
+  color: #fff;
+  font-size: 11px;
+  padding: 0px 6px;
+  border-radius: 50%;
+  margin-left: 18px;
+  margin-top: 0px;
+  transition: 0.3s ease-in-out;
+`;
+
 export default function Header() {
   const { cartProducts } = useContext(CartContext);
   const [mobileNavActive, setMobileNavActive] = useState(false);
@@ -107,7 +121,10 @@ export default function Header() {
             <NavLink href={"/account"}>Account</NavLink>
             <NavLink href={"/cart"}>
               {" "}
-              <CartIcon /> ({cartProducts.length})
+              <CartIcon />
+              {cartProducts.length > 0 && (
+                <ProductsNumber>{cartProducts.length}</ProductsNumber>
+              )}
             </NavLink>
           </StyledNav>
           <SideIcons>

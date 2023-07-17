@@ -9,15 +9,19 @@ import ProductImages from "@/components/ProductImages";
 import CartIcon from "@/components/icons/CartIcon";
 import FlyingButton from "@/components/FlyingButton";
 import ProductReviews from "@/components/ProductReviews";
+import Footer from "@/components/Footer";
 
 const ColWrapper = styled.div`
   display: grid;
+  & > div {
+    margin-top: 0;
+  }
   @media screen and (min-width: 768px) {
     grid-template-columns: 0.8fr 1.2fr;
   }
   grid-template-columns: 1fr;
   gap: 40px;
-  margin: 40px0;
+  margin: 40px;
 `;
 
 const PriceRow = styled.div`
@@ -28,6 +32,7 @@ const PriceRow = styled.div`
 
 const Price = styled.span`
   font-size: 1.4rem;
+  font-weight: 500;
 `;
 
 export default function ProductPage({ product }) {
@@ -59,6 +64,7 @@ export default function ProductPage({ product }) {
         </ColWrapper>
         <ProductReviews product={product} />
       </Center>
+      <Footer />
     </>
   );
 }

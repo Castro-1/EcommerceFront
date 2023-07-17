@@ -15,7 +15,7 @@ const StyledFooter = styled.footer`
   text-align: center;
 `;
 
-const FooterContainer = styled.footer`
+const FooterContainer = styled.div`
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
@@ -29,14 +29,21 @@ const FooterContainer = styled.footer`
 
 const FooterGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
   text-align: left;
+  justify-content: center;
+  @media screen and (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  & > div {
+    padding: 20px;
+    margin: 0 auto;
+  }
 `;
 
 const FooterTitle = styled.h3`
   border-bottom: 2px solid #aaa;
-  max-width: 100px;
+  max-width: 120px;
 `;
 
 const StyledNav = styled.nav``;
@@ -63,7 +70,6 @@ const ContactInfo = styled.div`
 `;
 
 const NewsletterContainer = styled.div`
-  max-width: 220px;
   button {
     padding: 5px;
     font-size: 14px;
@@ -80,12 +86,12 @@ export default function Footer() {
           <div>
             <FooterTitle>Newsletter</FooterTitle>
             <NewsletterContainer>
-              <Input placeholder="Email" />
-              <Button>Submit</Button>
               <p>
                 Subscribe to our awesome newsletter to recieve discounts and get
                 previous access to our new products!
               </p>
+              <Input placeholder="Email" />
+              <Button>Submit</Button>
             </NewsletterContainer>
           </div>
           <div>

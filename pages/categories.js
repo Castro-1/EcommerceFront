@@ -11,6 +11,7 @@ import { WishedProduct } from "@/models/WishedProduct";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { mongooseConnect } from "@/lib/mongoose";
+import Footer from "@/components/Footer";
 
 const CategoryGrid = styled.div`
   display: grid;
@@ -88,6 +89,7 @@ export default function CategoriesPage({
           </CategoryWrapper>
         ))}
       </Center>
+      <Footer />
     </>
   );
 }

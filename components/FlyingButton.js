@@ -9,7 +9,7 @@ const FlyingButtonWrapper = styled.div`
   }
   @keyframes fly {
     100% {
-      top: 0;
+      top: 0%;
       left: 90%;
       opacity: 0;
       display: none;
@@ -19,7 +19,27 @@ const FlyingButtonWrapper = styled.div`
     @keyframes fly {
       100% {
         top: 6%;
-        left: 65%;
+        left: 70%;
+        opacity: 0;
+        display: none;
+      }
+    }
+  }
+  @media screen and (min-width: 1400px) {
+    @keyframes fly {
+      100% {
+        top: 6%;
+        left: 63%;
+        opacity: 0;
+        display: none;
+      }
+    }
+  }
+  @media screen and (min-width: 1600px) {
+    @keyframes fly {
+      100% {
+        top: 6%;
+        left: 60%;
         opacity: 0;
         display: none;
       }

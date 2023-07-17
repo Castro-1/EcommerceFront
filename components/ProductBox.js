@@ -84,11 +84,11 @@ const AlertContainer = styled.div`
   position: absolute;
   z-index: 10;
   & > div {
-    font-size: 14px;
+    font-size: 12px;
     margin: 5px;
-    padding: 2px 5px;
+    padding: 0px 2px;
     div {
-      width: 20px;
+      width: 16px;
     }
   }
 `;
@@ -132,7 +132,7 @@ export default function ProductWhiteBox({
     <ProductWrapper>
       {showAlert && (
         <AlertContainer>
-          <ErrorAlert showAlert={showAlert} content="Login to add" />
+          <ErrorAlert showAlert={showAlert} content="Login for wishlist" />
         </AlertContainer>
       )}
       <WhiteBox href={url}>

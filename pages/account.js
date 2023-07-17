@@ -13,6 +13,7 @@ import Spinner from "@/components/Spinner";
 import ProductWhiteBox from "@/components/ProductBox";
 import Tabs from "@/components/Tabs";
 import SingleOrder from "@/components/SingleOrder";
+import Footer from "@/components/Footer";
 
 const ColsWrapper = styled.div`
   display: grid;
@@ -21,6 +22,7 @@ const ColsWrapper = styled.div`
   p {
     margin: 5px;
   }
+  min-height: 38.8vh;
 `;
 
 const CityHolder = styled.div`
@@ -234,6 +236,7 @@ export default function AccountPage() {
           </diV>
         </ColsWrapper>
       </Center>
+      <Footer />
     </>
   );
 }
