@@ -1,11 +1,13 @@
 import { styled } from "styled-components";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "./CartContext";
 import PhoneIcon from "./icons/PhoneIcons";
 import EmailIcon from "./icons/EmailIcon";
 import { useSession } from "next-auth/react";
 import ButtonLink from "./ButtonLink";
+import Button from "./Button";
+import axios from "axios";
 
 const StyledFooter = styled.footer`
   background-color: #222;
@@ -71,18 +73,35 @@ const ContactInfo = styled.div`
 
 const NewsletterContainer = styled.div`
   a {
-    padding: 5px;
+    padding: 5px 10px;
     font-size: 14px;
     margin-top: 5px;
     text-decoration: none;
     background-color: #ccc;
     color: #000;
+    &:hover {
+      background-color: #aaa;
+    }
   }
 `;
 
 export default function Footer() {
   const { cartProducts } = useContext(CartContext);
   const { data: session } = useSession();
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  useEffect(() => {
+    axios.get("/api/address").then((res) => {
+      setIsSubscribed(res.data?.newsletter || false);
+    });
+  }, []);
+
+  async function handleSubscribe() {
+    await axios.put("/api/address", { newsletter: !isSubscribed }).then(() => {
+      setIsSubscribed((prev) => !prev);
+    });
+  }
+
   return (
     <StyledFooter>
       <FooterContainer>
@@ -91,10 +110,16 @@ export default function Footer() {
             <FooterTitle>Newsletter</FooterTitle>
             <NewsletterContainer>
               <p>
-                Subscribe to our awesome newsletter to recieve discounts and get
-                previous access to our new products!
+                {session ? "Subscribe" : "Login to subscribe"} to our awesome
+                newsletter to recieve discounts and get previous access to our
+                new products!
               </p>
               {!session && <ButtonLink href={"/account"}>Login</ButtonLink>}
+              {session && (
+                <Button onClick={handleSubscribe}>
+                  {isSubscribed ? "Cancel :(" : "Subscribe!"}
+                </Button>
+              )}
             </NewsletterContainer>
           </div>
           <div>

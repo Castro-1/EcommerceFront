@@ -11,7 +11,13 @@ export default async function handle(req, res) {
     if (address) {
       res.json(await Address.findByIdAndUpdate(address._id, req.body));
     } else {
-      res.json(await Address.create({ userEmail: user.email, ...req.body }));
+      res.json(
+        await Address.create({
+          userEmail: user.email,
+          newsletter: false,
+          ...req.body,
+        })
+      );
     }
   }
 
