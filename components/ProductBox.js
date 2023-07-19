@@ -82,7 +82,7 @@ const WishlistButton = styled.button`
 
 const AlertContainer = styled.div`
   position: absolute;
-  z-index: 10;
+  z-index: 1;
   & > div {
     font-size: 12px;
     margin: 5px;

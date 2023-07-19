@@ -4,8 +4,8 @@ import { useContext } from "react";
 import { CartContext } from "./CartContext";
 import PhoneIcon from "./icons/PhoneIcons";
 import EmailIcon from "./icons/EmailIcon";
-import Input from "./Input";
-import Button from "./Button";
+import { useSession } from "next-auth/react";
+import ButtonLink from "./ButtonLink";
 
 const StyledFooter = styled.footer`
   background-color: #222;
@@ -34,10 +34,10 @@ const FooterGrid = styled.div`
   @media screen and (min-width: 768px) {
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-  }
-  & > div {
-    padding: 20px;
-    margin: 0 auto;
+    & > div {
+      padding: 20px;
+      margin: 0 auto;
+    }
   }
 `;
 
@@ -70,15 +70,19 @@ const ContactInfo = styled.div`
 `;
 
 const NewsletterContainer = styled.div`
-  button {
+  a {
     padding: 5px;
     font-size: 14px;
     margin-top: 5px;
+    text-decoration: none;
+    background-color: #ccc;
+    color: #000;
   }
 `;
 
 export default function Footer() {
   const { cartProducts } = useContext(CartContext);
+  const { data: session } = useSession();
   return (
     <StyledFooter>
       <FooterContainer>
@@ -90,8 +94,7 @@ export default function Footer() {
                 Subscribe to our awesome newsletter to recieve discounts and get
                 previous access to our new products!
               </p>
-              <Input placeholder="Email" />
-              <Button>Submit</Button>
+              {!session && <ButtonLink href={"/account"}>Login</ButtonLink>}
             </NewsletterContainer>
           </div>
           <div>
